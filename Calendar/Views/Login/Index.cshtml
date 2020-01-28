@@ -1,0 +1,36 @@
+﻿
+@model Calendar.ViewModels.UserLoginViewModel
+
+
+<h2>Login</h2>
+
+@{
+    var data = ViewBag.data;
+}
+
+
+<form asp-controller="Login" asp-action="Index" method="post">
+
+    <div class="form-group">
+        <label asp-for="name"></label>
+        @Html.EditorFor(m => m.name)
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="pass"></label>
+        @Html.EditorFor(m => m.pass)
+    </div>
+
+    <input type="submit" value="Submit" />
+</form>
+
+
+@if (ViewBag.data != null)
+{
+    <h1>@data.fname</h1>
+    <h1>@data.pass</h1>
+    <h1>@ViewBag.login</h1>
+    <h1>@ViewBag.Session</h1>
+}

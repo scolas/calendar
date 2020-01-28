@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Dayevent";
+}
+
+<h2>Dayevent</h2>
+
+@{
+    var data = ViewBag.data;
+    var events = ViewBag.events;
+}
+
+
+
+
+<h1>This is month is @ViewBag.month </h1>
+<h1>This is day @ViewBag.day</h1>
+
+
+@if (ViewBag.data != null)
+{
+    <h1>This month is @data.name</h1>
+
+    <h1>The event is @events.name</h1>
+}
+
+
+<li>@Html.ActionLink("Edit", "Editevent", "Calendar")</li>

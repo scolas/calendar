@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Calendar";
+}
+
+
+@{
+    //var data = ViewBag.data;
+    var mdata = ViewBag.mData;
+
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+<h2>Calendar</h2>
+
+<div class="month">
+    <ul>
+        <li class="prev"><a href="@Url.Action("preMonth", "Calendar", new { month = mdata.month })">&#10094;</a></li>
+        <li class="next"><a href="@Url.Action("Index", "Calendar", new { mn = mdata.month })">&#10095;</a></li>
+        <li>
+            @mdata.name<br>
+            <span style="font-size:18px">@mdata.year</span>
+        </li>
+    </ul>
+</div>
+
+<ul class="weekdays">
+    <li>Mo</li>
+    <li>Tu</li>
+    <li>We</li>
+    <li>Th</li>
+    <li>Fr</li>
+    <li>Sa</li>
+    <li>Su</li>
+</ul>
+
+<ul class="days">
+    @for (int i = 0; i < mdata.days; i++)
+    {
+
+        <li><a href="@Url.Action("Index", "Event" , new { days=@i, month=mdata.month, year=mdata.year })"> <span>@i</span></a></li>
+    }
+</ul>
+
+<br>
+
+
+
+<a href="@Url.Action("Create", "Event")">Create</a>
+
+@if (ViewBag.data != null)
+{
+    <div>
+        Day
+        Task
+        attendies
+    </div>
+}
