@@ -74,17 +74,29 @@ namespace Calendar.DataLayer
             List<Event> ret = new List<Event>();
             try
             {
-                string sql = "select * from dbo.Event";
-                DataTable obj = _idac.GetManyRowsCols(sql);
-                if (obj != null)
+                string sql = "select * from dbo.Events";
+                DataTable obj2 = _idac.GetManyRowsCols(sql);
+                DataSet obj = _idac.DataSetXEQDynamicSql(sql);
+                DataTable dt = obj.Tables[0];
+
+  
+                foreach (DataRow row in obj.Tables[0].Rows)
                 {
-                    foreach(DataRow e in obj.Rows)
-                    {
-                        
-                        //ret.Add(e);
-                    }
-                    
+                    object[] data1 = row.ItemArray;
+                    int id = (int)data1[0];
+                    string date = data1[1].ToString();
+                    string location = data1[2].ToString();
+                    string name = data1[3].ToString();
+
+                    Event tempEvent = new Event();
+                    tempEvent.id = id;
+                    tempEvent.location = location;
+                    tempEvent.setBy = name;
+                    ret.Add(tempEvent);
+
                 }
+
+         
             }
             catch (Exception)
             {
@@ -105,10 +117,6 @@ namespace Calendar.DataLayer
                     string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "')";
 
 
-
-                    /*string sql = "select username from dbo.Users where " +
-                        "Username='" + name + "' and pass='" +
-                        pwd + "'";*/
                     object obj = _idac.InsertUpdateDelete(sql);
                     if (obj != null)
                     {
@@ -117,7 +125,7 @@ namespace Calendar.DataLayer
                 }
                 catch (Exception)
                 {
-                    throw;
+                ret = false;
                 }
                 return ret;
 
@@ -125,7 +133,27 @@ namespace Calendar.DataLayer
 
             public bool UpdateEvent(Event events)
             {
-                throw new NotImplementedException();
+                bool ret = false;
+                try
+                {
+                    DateTime dates = DateTime.Now;
+                    string location = events.location;
+                    string setBy = events.setBy;
+                    string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}' where eventId = {3}",
+                        dates,location,setBy, events.id);
+
+                
+                    object obj = _idac.InsertUpdateDelete(sql);
+                    if (obj != null && (int)obj != 0)
+                    {
+                        ret = true;
+                    }
+                }
+                catch (Exception)
+                {
+                    ret = false;
+                }
+                return ret;
             }
 
 

@@ -12,40 +12,40 @@ namespace Calendar.Controllers
     public class CalendarController : Controller
     {
         // GET: Calendar
-        [HttpGet]
-        [ActionName("Index")]
+  
 
-        public ActionResult Index_Get(int? mn)
+        public ActionResult Index()
         {
 
-            Month m1 = new Month();
-            if (mn != null)
+             Month m1 = new Month();
+           /* if (action.Equals("next"))
             {
-                int v2 = mn ?? default(int);
+                //int v2 = mn ?? default(int);
                 IBusinessCalendar changeMonth = new BusinessCalendar();
-                m1 = changeMonth.nextMonth(v2);
+                m1 = changeMonth.nextMonth(mn);
                 ViewBag.mData = m1;
             }
             else
-            {
+            {*/
+                
                 int year = (int)DateTime.Now.Year;
                 int m = (int)DateTime.Now.Month;
                 int days = DateTime.DaysInMonth(year, m);
                 int month = DateTime.Now.Month;
-                m1.month = 1
+                m1.month = "January";
                 m1.days = days;
                 m1.name = DateTime.Now.ToString("MMMM");
                 m1.number = days;
                 m1.year = 2020;
                 ViewBag.mData = m1;
-            }
+           // }
             
             return View();
         }
 
-        [HttpPost]
+       /* [HttpPost]
         [ActionName("Index")]
-        public ActionResult Index_Post(int? mn)
+        public ActionResult Index_Post(int mn)
         {
             int year = (int)DateTime.Now.Year;
             int m = (int)DateTime.Now.Month;
@@ -61,9 +61,9 @@ namespace Calendar.Controllers
             m1.year = 2020;
             if(mn != null)
             {
-                int v2 = mn ?? default(int);
+                //int v2 = mn ?? default(int);
                 IBusinessCalendar changeMonth = new BusinessCalendar();
-                Month m2 = changeMonth.nextMonth(v2);
+                Month m2 = changeMonth.nextMonth(1);
                 ViewBag.days = m2.days;
                 ViewBag.month = m2.name;
                 ViewBag.year = "2020";
@@ -75,7 +75,7 @@ namespace Calendar.Controllers
             }
            
             return View();
-        }
+        }*/
 
 
 
@@ -94,18 +94,20 @@ namespace Calendar.Controllers
 
 
         
-        public ActionResult nextMonth(int month)
+        public PartialViewResult nextMonth()
         {
             IBusinessCalendar changeMonth = new BusinessCalendar();
-            Month m2 = changeMonth.nextMonth(month);
-            ViewBag.days = m2.days;
-            ViewBag.month = m2.name;
-            ViewBag.year = "2020";
-            ViewBag.mData = m2;
-            return RedirectToAction("Index", new { month = m2.name});
-           // return View();
+            Month m2 = changeMonth.nextMonth(1);
+            
+            //return RedirectToAction("Index", new { mn = m2.name});
+            // return View();
+
+            //List<Student> model = db.Students.OrderByDescending(x => x.TotalMarks).Take(3).ToList();
+            return PartialView("_pView", m2);
         }
 
+
+ 
 
 
     }

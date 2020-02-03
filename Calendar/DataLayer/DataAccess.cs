@@ -10,6 +10,10 @@ namespace Calendar.DataLayer
 {
     public class DataAccess : IDataAccess
     {
+
+        private const int CommandTimeout = 600;
+
+
         string connStr = ConfigurationManager.ConnectionStrings["Calendar"].ConnectionString;
         public DataTable GetManyRowsCols(string sql)
         {
@@ -34,6 +38,27 @@ namespace Calendar.DataLayer
                 conn.Close();
             }
             return dt;
+        }
+
+
+        public DataSet DataSetXEQDynamicSql(string commandText)
+        {
+            SqlConnection conn = null;
+            try
+            {
+                conn = new SqlConnection(connStr);
+                conn.Open();
+                DataSet ds = new DataSet();
+                SqlDataAdapter da = new SqlDataAdapter(commandText, conn);
+                da.SelectCommand.CommandTimeout = CommandTimeout;
+                da.Fill(ds);
+                return ds;
+            }
+            finally
+            {
+                if ((conn != null) && (conn.State == ConnectionState.Open))
+                    conn.Close();
+            }
         }
 
         public object GetSingleAnswer(string sql)

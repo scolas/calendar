@@ -12,7 +12,7 @@ namespace Calendar.BusinessLayer
 
         bool CreateEvent(Event e);
 
-        void UpdateEvent(Event events);
+        bool UpdateEvent(Event events);
 
         bool DeleteEvent(Event events);
     }

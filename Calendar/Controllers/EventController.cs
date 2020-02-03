@@ -10,16 +10,18 @@ namespace Calendar.Controllers
 {
     public class EventController : Controller
     {
+
+        public Event globalE = new Event();
         // GET: Event
         [HttpGet]
         public ActionResult Index()
         {
-            List<Event> e = new List<Event>();
+            List<Event> eventList = new List<Event>();
             IBussinessEvent bussinessEvent = new BusinessEvent();
-            e = bussinessEvent.events();
+            eventList = bussinessEvent.events();
 
-            ViewBag.data = e;
-            return View();
+            ViewBag.data = eventList;
+            return View(eventList);
         }
 
         [HttpPost]
@@ -32,15 +34,24 @@ namespace Calendar.Controllers
             return View();
         }
 
-        public ActionResult Edit(string name, string location,int day, string setBy)
+        public ActionResult Edit2(int id, string name, string location,int day, string setBy) {
+
+            globalE.id = id;
+            globalE.name = name;
+            globalE.location = location;
+            globalE.day = day;
+            globalE.setBy = setBy;
+
+            return View();
+        }
+
+        public ActionResult Edit(Event es)
         {
-           /* Event e = new Event();
-            e.name = "test";
-            e.location = "tets";
-            e.day = 1;
-            e.setBy = "test";*/
-            IBussinessEvent dayE = new BusinessEvent();
-            //var e = dayE.getEvent(1, 1, 1);
+            Event e = new Event();
+            e = es;
+
+            IBussinessEvent editE = new BusinessEvent();
+            bool update = editE.UpdateEvent(e);
             return View();
         }
 
@@ -48,13 +59,6 @@ namespace Calendar.Controllers
         [ActionName("Delete")]
         public ActionResult Delete_View()
         {
-            /* Event e = new Event();
-             e.name = "test";
-             e.location = "tets";
-             e.day = 1;
-             e.setBy = "test";*/
-           // IBussinessEvent dayE = new BusinessEvent();
-            //var e = dayE.getEvent(1, 1, 1);
             return View();
         }
 
@@ -84,23 +88,29 @@ namespace Calendar.Controllers
         [ActionName("Create")]
         public ActionResult Create_Get()
         {
-
-            //IBussinessEvent Editevent = new BusinessEvent();
-            //Editevent.CreateEvent();
             return View();
         }
 
-       /* [ActionName("Create")]*/
         [HttpPost]
         [ActionName("Create")]
         public ActionResult Create_Post(Event e)
         {
 
             IBussinessEvent createEvent = new BusinessEvent();
-            if (createEvent.CreateEvent(e)){
-                return RedirectToAction("Index");
+
+            if (ModelState.IsValid)
+            {
+                if (createEvent.CreateEvent(e)){
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.error = "Not working";
+                    return View();
+                }
+
             }
-            
+
             return View();
         }
 

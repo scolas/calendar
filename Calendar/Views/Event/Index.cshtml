@@ -1,32 +1,36 @@
-﻿@{ 
+﻿@{
     var data = ViewBag.Data;
 }
 
 
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+@model List<Calendar.Models.Event>
 
-    
-        <Table>
-            <tr>
-                <th>Name </th>
-                <th>Location</th>
-                <th>Date</th>
-            </tr>
-            @foreach (var e in @data)
-            {
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+@foreach (var item in Model)
+{
+    <span>@item.name</span>
+}
 
-                <!--li>@e.name  <a href="@Url.Action("Edit", "Event")">Edit</a></li>-->
-                <br>
-                <tr>
-                    <td>@e.name </td>
-                    <td>@e.location </td>
-                    <td>@e.day </td>
-                    <td>@Html.ActionLink("Edit", "Edit", new { name = @e.name, location = @e.location, day = @e.day, setBy = @e.setBy }) </td>
-             
-                    <td> @Html.ActionLink("Delete", "Delete") </td>
+<Table>
+    <tr>
+        <th>Name </th>
+        <th>Location</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var e in @data)
+    {
 
-                </tr>
+        <!--li>@e.name  <a href="@Url.Action("Edit", "Event")">Edit</a></li>-->
+        <br>
+        <tr>
+            <td>@e.name </td>
+            <td>@e.location </td>
+            <td>@e.day </td>
+            <td>@Html.ActionLink("Edit", "Edit", new {id =e.id, name = @e.name, location = @e.location, day = @e.day, setBy = @e.setBy }) </td>
 
-            }
-        </Table>
-        
+            <td> @Html.ActionLink("Delete", "Delete") </td>
+
+        </tr>
+
+    }
+</Table>

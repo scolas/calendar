@@ -1,15 +1,17 @@
 ﻿@model Calendar.Models.Event
 
+
+
 @{
     ViewBag.Title = "Create";
 }
 
 <h2>Create</h2>
-
-@using (Html.BeginForm()) 
+<h3>@ViewBag.error</h3>
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Event</h4>
         <hr />

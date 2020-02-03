@@ -15,5 +15,8 @@ namespace Calendar.DataLayer
 
         int InsertUpdateDelete(string sql);
 
+
+        DataSet DataSetXEQDynamicSql(string sql);
+
     }
 }

@@ -11,18 +11,39 @@
 }
 
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+
+
 <h2>Calendar</h2>
 
 <div class="month">
     <ul>
-        <li class="prev"><a href="@Url.Action("preMonth", "Calendar", new { month = mdata.month })">&#10094;</a></li>
-        <li class="next"><a href="@Url.Action("Index", "Calendar", new { mn = mdata.month })">&#10095;</a></li>
+        <li class="prev"><a href="@Url.Action("preMonth", "Calendar", new { mn = mdata.month })">&#10094;</a></li>
+        <li class="next"><a href="@Url.Action("nextMonth", "Calendar", new { mn = 1, action="next" })">&#10095;</a></li>
+
+
+
         <li>
             @mdata.name<br>
             <span style="font-size:18px">@mdata.year</span>
         </li>
     </ul>
 </div>
+<script>
+
+    $("#addItem").click(function (e) {
+
+        e.preventDefault();
+        $.ajax({
+            url: "CalendarController",
+            cache: false,
+            success: function (html) {
+                alert(html);
+            }
+
+        });
+        return false;
+    });
+</script>
 
 <ul class="weekdays">
     <li>Mo</li>
@@ -42,17 +63,35 @@
     }
 </ul>
 
-<br>
-
 
 
 <a href="@Url.Action("Create", "Event")">Create</a>
 
-@if (ViewBag.data != null)
+
+@Ajax.ActionLink("nextMonth", "nextMonth",
+        new AjaxOptions
+        {
+          HttpMethod = "POST", // HttpMethod to use, GET or POST
+          UpdateTargetId = "divStudents", // ID of the HTML element to update
+          InsertionMode = InsertionMode.Replace // Replace the existing contents
+        })
+<br />
+<br />
+<div id="divStudents">
+</div>
+
+
+<h1 id="addItem">testadd</h1>
+
+
+
+
+@Ajax.ActionLink("Load More Posts", "Calendar", new AjaxOptions()
 {
-    <div>
-        Day
-        Task
-        attendies
-    </div>
-}
+    HttpMethod = "GET",
+    AllowCache = false,
+    InsertionMode = InsertionMode.InsertAfter,
+    UpdateTargetId = "posts-wrapper"
+})
+
+<div id="posts-wrapper"></div>

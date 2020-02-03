@@ -12,5 +12,7 @@ namespace Calendar.Models
         public int days { get; set; }
         public int year { get; set; }
 
+        public string month { get; set; }
+
     }
 }
