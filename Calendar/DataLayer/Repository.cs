@@ -75,23 +75,23 @@ namespace Calendar.DataLayer
             try
             {
                 string sql = "select * from dbo.Events";
-                DataTable obj2 = _idac.GetManyRowsCols(sql);
                 DataSet obj = _idac.DataSetXEQDynamicSql(sql);
-                DataTable dt = obj.Tables[0];
 
   
                 foreach (DataRow row in obj.Tables[0].Rows)
                 {
-                    object[] data1 = row.ItemArray;
-                    int id = (int)data1[0];
-                    string date = data1[1].ToString();
-                    string location = data1[2].ToString();
-                    string name = data1[3].ToString();
+                    object[] data = row.ItemArray;
+                    int id = (int)data[0];
+                    string date = data[1].ToString();
+                    string location = data[2].ToString();
+                    string setby = data[3].ToString();
+                    string name = data[4].ToString();
 
                     Event tempEvent = new Event();
                     tempEvent.id = id;
                     tempEvent.location = location;
-                    tempEvent.setBy = name;
+                    tempEvent.setBy = setby;
+                    tempEvent.name = name;
                     ret.Add(tempEvent);
 
                 }
@@ -114,7 +114,7 @@ namespace Calendar.DataLayer
                     DateTime dates = DateTime.Now;
                     string location = events.location;
                     string setBy = events.setBy;
-                    string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "')";
+                    string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy],[title]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "', '" + events.name + "')";
 
 
                     object obj = _idac.InsertUpdateDelete(sql);
@@ -139,8 +139,8 @@ namespace Calendar.DataLayer
                     DateTime dates = DateTime.Now;
                     string location = events.location;
                     string setBy = events.setBy;
-                    string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}' where eventId = {3}",
-                        dates,location,setBy, events.id);
+                    string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}', title = '{3}' where eventId = {4}",
+                        dates, location, setBy, events.name, events.id);
 
                 
                     object obj = _idac.InsertUpdateDelete(sql);

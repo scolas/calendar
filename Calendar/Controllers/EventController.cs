@@ -20,7 +20,6 @@ namespace Calendar.Controllers
             IBussinessEvent bussinessEvent = new BusinessEvent();
             eventList = bussinessEvent.events();
 
-            ViewBag.data = eventList;
             return View(eventList);
         }
 
@@ -34,26 +33,32 @@ namespace Calendar.Controllers
             return View();
         }
 
-        public ActionResult Edit2(int id, string name, string location,int day, string setBy) {
 
-            globalE.id = id;
-            globalE.name = name;
-            globalE.location = location;
-            globalE.day = day;
-            globalE.setBy = setBy;
-
-            return View();
-        }
-
-        public ActionResult Edit(Event es)
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            Event e = new Event();
-            e = es;
-
-            IBussinessEvent editE = new BusinessEvent();
-            bool update = editE.UpdateEvent(e);
-            return View();
+            IBussinessEvent bussinessEvent = new BusinessEvent();
+            List<Event> eventsList = bussinessEvent.events();
+            Event formEvent = eventsList.Find(x => x.id == id);
+            return View(formEvent);
         }
+
+        [HttpPost]
+        public ActionResult Edit(Event editedEvents)
+        {
+            if (ModelState.IsValid)
+            {
+                IBussinessEvent editE = new BusinessEvent();
+                bool update = editE.UpdateEvent(editedEvents);
+                return RedirectToAction("Index");
+            }
+            return View(editedEvents);
+        }
+
+
+
+
+
 
         [HttpGet]
         [ActionName("Delete")]

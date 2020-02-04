@@ -17,17 +17,15 @@
         <th>Location</th>
         <th>Date</th>
     </tr>
-    @foreach (var e in @data)
+    @foreach (var e in Model)
     {
 
-        <!--li>@e.name  <a href="@Url.Action("Edit", "Event")">Edit</a></li>-->
-        <br>
+       <br>
         <tr>
             <td>@e.name </td>
             <td>@e.location </td>
             <td>@e.day </td>
-            <td>@Html.ActionLink("Edit", "Edit", new {id =e.id, name = @e.name, location = @e.location, day = @e.day, setBy = @e.setBy }) </td>
-
+            <td>@Html.ActionLink("Edit", "Edit", new {id =e.id }) </td>
             <td> @Html.ActionLink("Delete", "Delete") </td>
 
         </tr>
