@@ -6,15 +6,13 @@
 @model List<Calendar.Models.Event>
 
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
-@foreach (var item in Model)
-{
-    <span>@item.name</span>
-}
+
 
 <Table>
     <tr>
         <th>Name </th>
         <th>Location</th>
+        <th>Set by</th>
         <th>Date</th>
     </tr>
     @foreach (var e in Model)
@@ -24,11 +22,15 @@
         <tr>
             <td>@e.name </td>
             <td>@e.location </td>
+            <td>@e.setBy </td>
             <td>@e.day </td>
             <td>@Html.ActionLink("Edit", "Edit", new {id =e.id }) </td>
-            <td> @Html.ActionLink("Delete", "Delete") </td>
+            <td> @Html.ActionLink("Delete", "Delete", new { id = e.id }) </td>
 
         </tr>
 
     }
 </Table>
+
+
+<a href="@Url.Action("Create", "Event")">Create</a>

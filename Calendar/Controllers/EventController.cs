@@ -62,27 +62,29 @@ namespace Calendar.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public ActionResult Delete_View()
+        public ActionResult Delete_View(int id)
         {
-            return View();
+            IBussinessEvent bussinessEvent = new BusinessEvent();
+            List<Event> eventsList = bussinessEvent.events();
+            Event formEvent = eventsList.Find(x => x.id == id);
+            return View(formEvent);
         }
 
         [HttpPost]
         [ActionName("Delete")]
-        public ActionResult Delete(Event es)
+        public ActionResult Delete(Event dEvent)
         {
-            //<td>@Html.ActionLink("Delete", "Delete", new { ids = 1, name ="", location ="", day = "", setBy = "" }) </td>
-           // int ids, string name, string location, int day, string setBy
-             Event e = new Event();
-             e.id = 1;
-             e.name = "test";
-             e.location = "tets";
-             e.day = 1;
-             e.setBy = "test";
+           
             IBussinessEvent events = new BusinessEvent();
-            events.DeleteEvent(e);
-            //var e = dayE.getEvent(1, 1, 1);
-            return View();
+            if (events.DeleteEvent(dEvent))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
 

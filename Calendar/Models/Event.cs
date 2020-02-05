@@ -14,7 +14,7 @@ namespace Calendar.Models
         public string name { get; set; }
 
         [Required] 
-        public int day { get; set; }
+        public DateTime day { get; set; }
 
          
         public List<String> attendees { get; set; }

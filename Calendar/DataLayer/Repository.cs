@@ -82,7 +82,7 @@ namespace Calendar.DataLayer
                 {
                     object[] data = row.ItemArray;
                     int id = (int)data[0];
-                    string date = data[1].ToString();
+                    DateTime date = (DateTime)data[1];
                     string location = data[2].ToString();
                     string setby = data[3].ToString();
                     string name = data[4].ToString();
@@ -92,6 +92,7 @@ namespace Calendar.DataLayer
                     tempEvent.location = location;
                     tempEvent.setBy = setby;
                     tempEvent.name = name;
+                    tempEvent.day = date;
                     ret.Add(tempEvent);
 
                 }
@@ -136,7 +137,7 @@ namespace Calendar.DataLayer
                 bool ret = false;
                 try
                 {
-                    DateTime dates = DateTime.Now;
+                    DateTime dates = events.day;
                     string location = events.location;
                     string setBy = events.setBy;
                     string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}', title = '{3}' where eventId = {4}",
