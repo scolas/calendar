@@ -11,81 +11,101 @@
 }
 
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+<script>
+    $(function () {
+        LoadData();
+        $("#btnSave").click(function () {
+            //alert("");
+            var std = {};
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("createStudent")',
+                data: '{std: ' + JSON.stringify(std) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Data has been added successfully.");
+                   // LoadData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
 
+            $("#btnmonth").click(function () {
+            //alert("");
+                var stdd = document.getElementById("monthnum").innerHTML;
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getStudent")',
+                    data: '{id: ' + stdd + '}',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (month) {
+                        //alert("Data has been added successfully." + month.name);
+                        document.getElementById("monthnum").innerHTML = month.number
+                        document.getElementById("monthnumm").innerHTML = month.name
+                        // LoadData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+        function LoadData() {
+        $("#tblStudent tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getStudent")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                    + "<td class='prtoducttd'>test3</td>"
+                    + "<td class='prtoducttd'>test1</td>"
+                    + "<td class='prtoducttd'>test</td>"
+                    + "</tr>";
+                    $('#tblStudent tbody').append(rows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+        return false;
+    }
+
+
+</script>
 
 <h2>Calendar</h2>
 
 <div class="month">
     <ul>
         <li class="prev"><a href="@Url.Action("preMonth", "Calendar", new { mn = mdata.month })">&#10094;</a></li>
-        <li class="next"><a href="@Url.Action("nextMonth", "Calendar", new { mn = 1, action="next" })">&#10095;</a></li>
+        <li class="next" id="btnmonth">&#10095;</li>
+    
 
 
 
+    <ul>
         <li>
-            @mdata.name<br>
+            <h3 id="monthnumm"> @mdata.name</h3><br>
             <span style="font-size:18px">@mdata.year</span>
         </li>
     </ul>
 </div>
-<script>
-    $(function () {  
-        LoadData();  
-        $("#btnSave").click(function () {  
-            //alert("");  
-            var std = {};  
-            std.studentName = $("#StudentName").val();  
-            std.studentAddress = $("#StudentAddress").val();  
-            $.ajax({  
-                type: "POST",  
-                url: '@Url.Action("createStudent")',  
-                data: '{std: ' + JSON.stringify(std) + '}',  
-                dataType: "json",  
-                contentType: "application/json; charset=utf-8",  
-                success: function () {  
-                   // alert("Data has been added successfully.");  
-                    LoadData();  
-                },  
-                error: function () {  
-                    alert("Error while inserting data");  
-                }  
-            });  
-            return false;  
-        });  
-    });  
 
-
-        function LoadData() {  
-        $("#tblStudent tbody tr").remove();  
-        $.ajax({  
-            type: 'POST',  
-            url: '@Url.Action("getStudent")',  
-            dataType: 'json',  
-            data: { id: '' },  
-            success: function (data) {  
-                var items = '';  
-                $.each(data, function (i, item) {  
-                    var rows = "<tr>"  
-                    + "<td class='prtoducttd'>" + item.studentID + "</td>"  
-                    + "<td class='prtoducttd'>" + item.studentName + "</td>"  
-                    + "<td class='prtoducttd'>" + item.studentAddress + "</td>"  
-                    + "</tr>";  
-                    $('#tblStudent tbody').append(rows);  
-                });  
-            },  
-            error: function (ex) {  
-                var r = jQuery.parseJSON(response.responseText);  
-                alert("Message: " + r.Message);  
-                alert("StackTrace: " + r.StackTrace);  
-                alert("ExceptionType: " + r.ExceptionType);  
-            }  
-        });  
-        return false;  
-    }  
-      
-
-</script>
-
+<p id="monthnum" value="test">2</p>
 <ul class="weekdays">
     <li>Mo</li>
     <li>Tu</li>

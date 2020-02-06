@@ -17,7 +17,7 @@ namespace Calendar.BusinessLayer
             
             m1.name = newMonth.ToString("MMMM");
             m1.days = DateTime.DaysInMonth(newMonth.Year, newMonth.Month);
-            m1.number = 6;
+            m1.number = newMonth.Month;
 
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 using Calendar.BusinessLayer;
 using Calendar.Models;
 using Calendar.ViewModels;
@@ -107,7 +108,35 @@ namespace Calendar.Controllers
         }
 
 
- 
+        [HttpPost]
+        public ActionResult createStudent(object std)
+        {
+
+            IBusinessCalendar changeMonth = new BusinessCalendar();
+            Month m2 = changeMonth.nextMonth(1);
+
+            //return RedirectToAction("Index", new { mn = m2.name});
+            // return View();
+
+            //List<Student> model = db.Students.OrderByDescending(x => x.TotalMarks).Take(3).ToList();
+            //return PartialView("_pView", m2);
+
+            string message = "SUCCESS";
+            return Json(new { Message = message, JsonRequestBehavior.AllowGet });
+            //return "SUCCESS";
+        }
+
+        [HttpPost]
+        public JsonResult getStudent(string id)
+        {
+            IBusinessCalendar changeMonth = new BusinessCalendar();
+            Month m2 = changeMonth.nextMonth(int.Parse(id));
+            
+            return Json(m2, JsonRequestBehavior.AllowGet);
+        }
+
+
+
 
 
     }
