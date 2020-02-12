@@ -9,7 +9,7 @@ namespace Calendar.BusinessLayer
 {
     interface IBusinessCalendar
     {
-        Month preMonth();
+        Month preMonth(int month);
         Month nextMonth(int month);
     }
 }

@@ -1,0 +1,43 @@
+﻿@{
+    var data = ViewBag.Data;
+}
+
+
+@model List<Calendar.Models.Event>
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
+
+
+<Table>
+
+    @if (Model.Count != 0)
+    {
+        <tr>
+            <th>Name </th>
+            <th>Location</th>
+            <th>Set by</th>
+            <th>Date</th>
+        </tr>
+        foreach (var e in Model)
+        {
+
+            <br>
+            <tr>
+                <td>@e.name </td>
+                <td>@e.location </td>
+                <td>@e.setBy </td>
+                <td>@e.day </td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = e.id }) </td>
+                <td> @Html.ActionLink("Delete", "Delete", new { id = e.id }) </td>
+
+            </tr>
+
+        }
+    }
+    else
+    {
+        <h2> No events </h2>
+    }
+</Table>
+
+<li>@Html.ActionLink("Edit", "Editevent", "Calendar")</li>

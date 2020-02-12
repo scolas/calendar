@@ -187,7 +187,7 @@
     <Content Include="Views\Calendar\Index.cshtml" />
     <Content Include="Views\Calendar\Dayevent.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
-    <Content Include="Views\Event\Dayevent.cshtml" />
+    <Content Include="Views\Event\getDayEvents.cshtml" />
     <Content Include="Views\Event\Editevent.cshtml" />
     <Content Include="Views\Event\Edit.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />

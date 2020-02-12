@@ -121,19 +121,21 @@ namespace Calendar.Controllers
             return View();
         }
 
-        public ActionResult Dayevent(int days, int month, int year)
+        public ActionResult getDayEvents(int days, int month, int year)
         {
             IBussinessEvent dayE = new BusinessEvent();
-            var e = dayE.getEvent(days, month, year);
-            /*
-            DayViewModels day = new DayViewModels();
-            day.name = e.name;
-            day.event2 = e;*/
-
-
+            
             Day d = new Day();
-            d.name = "monday";
             d.day = days;
+            d.year = year;
+            d.month = month;
+
+            DateTime d1 = new DateTime(d.year, d.month, d.day);
+            d1.ToString("yyyy’-‘MM’-‘dd’ HH:mm:ss");
+
+            DateTime d2 = d1;
+            List<Event> e = dayE.GetDayEvents(d);
+
 
             ViewBag.day = days;
             ViewBag.month = month;
@@ -142,10 +144,39 @@ namespace Calendar.Controllers
             ViewBag.data = d;
             ViewBag.events = e;
 
-
-            return View();
+            return View(e);
+            //return View();
         }
 
+ 
+        // public JsonResult getDayEvent(int days, int month, int year)
+        public ActionResult getDayEvent(int day, int month, int year)
+        {
+            IBussinessEvent dayE = new BusinessEvent();
+
+            Day d = new Day();
+            d.day = day;
+            d.year = year;
+            d.month = month;
+
+            DateTime d1 = new DateTime(d.year, d.month, d.day);
+            d1.ToString("yyyy’-‘MM’-‘dd’ HH:mm:ss");
+
+            DateTime d2 = d1;
+            List<Event> e = dayE.GetDayEvents(d);
+
+
+            ViewBag.day = day;
+            ViewBag.month = month;
+            ViewBag.year = year;
+
+            ViewBag.data = d;
+            ViewBag.events = e;
+
+            
+            //return Json(e, JsonRequestBehavior.AllowGet);
+            return View(e);
+        }
 
 
 

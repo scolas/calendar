@@ -58,6 +58,7 @@ namespace Calendar.BusinessLayer
             return e;
         }
 
+     
         public bool SaveEvent(Event events){
            bool i =  _irep.SaveEvent(events);
             return i;
@@ -67,6 +68,14 @@ namespace Calendar.BusinessLayer
         {
             bool i = _irep.UpdateEvent(events);
             return i;
+        }
+
+        List<Event> IBussinessEvent.GetDayEvents(Day day)
+        {
+            List<Event> e = new List<Event>();
+            e = _irep.GetDayEvents(day);
+
+            return e;
         }
     }
 

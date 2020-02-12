@@ -106,13 +106,70 @@ namespace Calendar.DataLayer
             return ret;
         }
 
+
+
+
+
+
+        public List<Event> GetDayEvents(Day day)
+        {
+            List<Event> ret = new List<Event>();
+
+            Day d = day;
+
+            DateTime d1 = new DateTime(d.year, d.month, d.day);
+                d1.ToString("yyyy-mm-dd HH:mm:ss");
+
+            try
+            {
+                string sql = String.Format("select * from dbo.Events where date >= '{0}' AND date < '{1}'", d1.AddHours(1).ToString("yyyy-MM-dd HH:mm:ss"), d1.AddHours(23).ToString("yyyy-MM-d HH:mm:ss"));
+    
+                DataSet obj = _idac.DataSetXEQDynamicSql(sql);
+
+                if (obj != null)
+                {
+                    foreach (DataRow row in obj.Tables[0].Rows)
+                    {
+                        object[] data = row.ItemArray;
+                        int id = (int)data[0];
+                        DateTime date = (DateTime)data[1];
+                        string location = data[2].ToString();
+                        string setby = data[3].ToString();
+                        string name = data[4].ToString();
+
+                        Event tempEvent = new Event();
+                        tempEvent.id = id;
+                        tempEvent.location = location;
+                        tempEvent.setBy = setby;
+                        tempEvent.name = name;
+                        tempEvent.day = date;
+                        ret.Add(tempEvent);
+
+                    }
+                }
+                else
+                {
+                    return ret;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ret;
+        }
+
+
+
+
         public bool SaveEvent(Event events)
             {
 
                 bool ret = false;
                 try
                 {
-                    DateTime dates = DateTime.Now;
+                    DateTime dates = events.day;
                     string location = events.location;
                     string setBy = events.setBy;
                     string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy],[title]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "', '" + events.name + "')";

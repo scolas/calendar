@@ -15,5 +15,7 @@ namespace Calendar.BusinessLayer
         bool UpdateEvent(Event events);
 
         bool DeleteEvent(Event events);
+
+        List<Event> GetDayEvents(Day day);
     }
 }

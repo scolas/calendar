@@ -16,5 +16,7 @@ namespace Calendar.DataLayer
 
         Event GetEvent(int id);
         List<Event> GetEvents();
+
+        List<Event> GetDayEvents(Day day);
     }
 }

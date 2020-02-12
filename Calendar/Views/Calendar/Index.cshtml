@@ -13,76 +13,135 @@
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
 <script>
     $(function () {
-        LoadData();
-        $("#btnSave").click(function () {
-            //alert("");
-            var std = {};
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("createStudent")',
-                data: '{std: ' + JSON.stringify(std) + '}',
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function () {
-                    alert("Data has been added successfully.");
-                   // LoadData();
-                },
-                error: function () {
-                    alert("Error while inserting data");
-                }
-            });
-            return false;
-        });
+                $("#prevMonth").click(function () {
+                        var pcurentMonth = document.getElementById("monthnum").innerHTML;
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("prevMonth")',
+                            data: '{id: ' + pcurentMonth + '}',
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (month) {
+                                //alert("Data has been added successfully." + month.name);
+                                document.getElementById("monthnum").innerHTML = month.number
+                                document.getElementById("monthName").innerHTML = month.name
+                                document.getElementById("monthyear").innerHTML = month.year
 
-            $("#btnmonth").click(function () {
-            //alert("");
-                var stdd = document.getElementById("monthnum").innerHTML;
+                                 $("#day2").empty()
+                                //mdata = month
+                                 LoadData(month);
+                        },
+                        error: function () {
+                            alert("1Error while inserting data");
+                        }
+                    });
+                    return false;
+                });
+
+            $("#nextMonth").click(function () {
+                var curentMonth = document.getElementById("monthnum").innerHTML;
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("getStudent")',
-                    data: '{id: ' + stdd + '}',
+                    url: '@Url.Action("nextMonth")',
+                    data: '{id: ' + curentMonth + '}',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (month) {
                         //alert("Data has been added successfully." + month.name);
                         document.getElementById("monthnum").innerHTML = month.number
-                        document.getElementById("monthnumm").innerHTML = month.name
-                        // LoadData();
+                        document.getElementById("monthName").innerHTML = month.name
+                        document.getElementById("monthyear").innerHTML = month.year
+                       // $("days").empty();
+                        //mdata = month
+                       $("#day2").empty()
+                        LoadData(month);
                 },
                 error: function () {
-                    alert("Error while inserting data");
+                    alert("4Error while inserting data");
                 }
-            });
+                });
             return false;
+            });
+
+        $("#dayclick").click(function () {
+                        alert("success in dayclick");
+                        var currentday = document.getElementByClassName("daynumber").innerHTML;
+                        var curentMonth = document.getElementById("monthnum").innerHTML;
+                        var currentyear = document.getElementById("monthyear").innerHTML;
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("nextMonth")',
+                                data: '{day: ' + currentday + ', month:'+ curentMonth+', year: '+2020+'}',
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (month) {
+                                    //alert("Data has been added successfully." + month.name);
+                                    //document.getElementById("monthnum").innerHTML = month.number
+                                    //document.getElementById("monthName").innerHTML = month.name
+                                    //document.getElementById("monthyear").innerHTML = month.year
+                                   // $("days").empty();
+                                    //mdata = month
+                                    alert("success in dayclick");
+                                  // $("#day2").empty()
+                                    //LoadData(month);
+                            },
+                            error: function () {
+                                alert("4Error while inserting data");
+                            }
+                        });
+                        return false;
+        });
+
+        $('body').on('click','.testbody', function(){ 
+            var currentday = $('.daynumber').innerHTML;
+                        var curentMonth = document.getElementById("monthnum").innerHTML;
+                        var curentyear = document.getElementById("monthyear").innerHTML;
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("getDayEvent","Event")',
+                                data: '{day: ' + currentday + ', month:'+ curentMonth+', year: '+2020+'}',
+                                dataType: "html",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (month) {
+                                    //alert("Data has been added successfully." + month.name);
+                                    //document.getElementById("monthnum").innerHTML = month.number
+                                    //document.getElementById("monthName").innerHTML = month.name
+                                    //document.getElementById("monthyear").innerHTML = month.year
+                                   // $("days").empty();
+                                    //mdata = month
+                                    alert("success in dayclick"+month);
+                                  // $("#day2").empty()
+                                    //LoadData(month);
+                            },
+                            error: function () {
+                                alert("4Error while inserting data");
+                            }
+                        });
+                        return false;
         });
     });
-        function LoadData() {
-        $("#tblStudent tbody tr").remove();
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("getStudent")',
-            dataType: 'json',
-            data: { id: '' },
-            success: function (data) {
-                var items = '';
-                $.each(data, function (i, item) {
-                    var rows = "<tr>"
-                    + "<td class='prtoducttd'>test3</td>"
-                    + "<td class='prtoducttd'>test1</td>"
-                    + "<td class='prtoducttd'>test</td>"
-                    + "</tr>";
-                    $('#tblStudent tbody').append(rows);
-                });
-            },
-            error: function (ex) {
-                var r = jQuery.parseJSON(response.responseText);
-                alert("Message: " + r.Message);
-                alert("StackTrace: " + r.StackTrace);
-                alert("ExceptionType: " + r.ExceptionType);
+    function LoadData(month) {
+        if (month != null) {
+            var ht = "";
+            var daysInMonth = month.days;
+            var yearInMonth = month.year;
+            var numberInMonth = month.number;
+            var daysForMonth = "<ul>";
+            for (i = 1; i < daysInMonth; i++) {
+                //daysForMonth += '<li class="testbody">' + i + '</li>';
+                daysForMonth += '<li class="testbody"><a href="#" runat="server" onclick="location.href=&quot;/Event/getDayEvents?days=' + i + '&month='  +numberInMonth+ '&year=' + yearInMonth+'+&quot;">' + i + '</a></li>';
+               // a href="#" runat="server" onclick='location.href="/Event/getDayEvents?days=1&month=3&year=2020"'>
             }
-        });
-        return false;
-    }
+            }
+
+            daysForMonth += "</ul>";
+
+
+            $("#day2").append("" + daysForMonth);
+
+        }
+
+    
 
 
 </script>
@@ -91,21 +150,18 @@
 
 <div class="month">
     <ul>
-        <li class="prev"><a href="@Url.Action("preMonth", "Calendar", new { mn = mdata.month })">&#10094;</a></li>
-        <li class="next" id="btnmonth">&#10095;</li>
-    
-
-
-
+        <li class="prev" id="prevMonth">&#10094;</li>
+        <li class="next" id="nextMonth">&#10095;</li>
+    </ul>
     <ul>
         <li>
-            <h3 id="monthnumm"> @mdata.name</h3><br>
+            <h3 id="monthName"> @mdata.name</h3><br>
             <span style="font-size:18px">@mdata.year</span>
         </li>
     </ul>
 </div>
 
-<p id="monthnum" value="test">2</p>
+
 <ul class="weekdays">
     <li>Mo</li>
     <li>Tu</li>
@@ -116,16 +172,27 @@
     <li>Su</li>
 </ul>
 
-<ul class="days">
-    @for (int i = 0; i < mdata.days; i++)
-    {
+<!-- <div id="day" class="days">
+    <ul >
+        @for (int i = 1; i < mdata.days; i++)
+        {
 
-        <li><a href="@Url.Action("Index", "Event" , new { days=@i, month=mdata.month, year=mdata.year })"> <span>@i</span></a></li>
-    }
-</ul>
+            <li><a href="@Url.Action("getDayEvents", "Event" , new { days=@i, month=mdata.number, year=mdata.year })"> <span>@i</span></a></li>
+        }
+    </ul>
+</div>
 
+    -->
 
+<div id="day2" class="days">
+    <ul>
+        @for (int i = 1; i < mdata.days; i++)
+        {
 
+            <li class="dayclick"><a href="@Url.Action("getDayEvents", "Event" , new { days=@i, month=mdata.number, year=mdata.year })"> <span>@i</span></a></li>
+        }
+    </ul>
+</div>
 <a href="@Url.Action("Create", "Event")">Create</a>
 
 <br>
@@ -136,3 +203,7 @@
           UpdateTargetId = "divStudents", // ID of the HTML element to update
           InsertionMode = InsertionMode.Replace // Replace the existing contents
         })
+<p id="monthnum" value="test">2</p>
+<p id="monthyear" value="test">2</p>
+<a href="#" runat="server" onserverclick="/Event/getDayEvent?day=1&month=3&year=2020">focus</a>
+<a href="#" runat="server" onclick='location.href="/Event/getDayEvents?days=1&month=3&year=2020"'>focus1</a>

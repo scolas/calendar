@@ -19,15 +19,7 @@ namespace Calendar.Controllers
         {
 
              Month m1 = new Month();
-           /* if (action.Equals("next"))
-            {
-                //int v2 = mn ?? default(int);
-                IBusinessCalendar changeMonth = new BusinessCalendar();
-                m1 = changeMonth.nextMonth(mn);
-                ViewBag.mData = m1;
-            }
-            else
-            {*/
+
                 
                 int year = (int)DateTime.Now.Year;
                 int m = (int)DateTime.Now.Month;
@@ -36,8 +28,8 @@ namespace Calendar.Controllers
                 m1.month = "January";
                 m1.days = days;
                 m1.name = DateTime.Now.ToString("MMMM");
-                m1.number = days;
-                m1.year = 2020;
+                m1.number = m;
+                m1.year = year;
                 ViewBag.mData = m1;
            // }
             
@@ -85,7 +77,7 @@ namespace Calendar.Controllers
         public ActionResult preMonth()
         {
             IBusinessCalendar changeMonth = new BusinessCalendar();
-            Month m1 = changeMonth.preMonth();
+            Month m1 = changeMonth.preMonth(5);
             ViewBag.days = m1.days;
             ViewBag.month = m1.name;
             ViewBag.year = "2020";
@@ -95,42 +87,24 @@ namespace Calendar.Controllers
 
 
         
-        public PartialViewResult nextMonth()
-        {
-            IBusinessCalendar changeMonth = new BusinessCalendar();
-            Month m2 = changeMonth.nextMonth(1);
-            
-            //return RedirectToAction("Index", new { mn = m2.name});
-            // return View();
 
-            //List<Student> model = db.Students.OrderByDescending(x => x.TotalMarks).Take(3).ToList();
-            return PartialView("_pView", m2);
-        }
 
 
         [HttpPost]
-        public ActionResult createStudent(object std)
+        public ActionResult prevMonth(string id)
         {
-
             IBusinessCalendar changeMonth = new BusinessCalendar();
-            Month m2 = changeMonth.nextMonth(1);
+            Month m2 = changeMonth.preMonth(int.Parse(id));
 
-            //return RedirectToAction("Index", new { mn = m2.name});
-            // return View();
-
-            //List<Student> model = db.Students.OrderByDescending(x => x.TotalMarks).Take(3).ToList();
-            //return PartialView("_pView", m2);
-
-            string message = "SUCCESS";
-            return Json(new { Message = message, JsonRequestBehavior.AllowGet });
-            //return "SUCCESS";
+            return Json(m2, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult getStudent(string id)
+        public JsonResult nextMonth(string id)
         {
             IBusinessCalendar changeMonth = new BusinessCalendar();
             Month m2 = changeMonth.nextMonth(int.Parse(id));
+
             
             return Json(m2, JsonRequestBehavior.AllowGet);
         }

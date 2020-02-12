@@ -9,6 +9,11 @@ namespace Calendar.Models
     {
        public int day { get; set; }
        public string name { get; set; }
+       public int month { get; set; }
+       public int year { get; set; }
+
+
+        public List<Event> events { get; set; }
 
 
     }

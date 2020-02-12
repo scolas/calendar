@@ -11,32 +11,34 @@ namespace Calendar.BusinessLayer
         public Month nextMonth(int month)
         {
             Month m1 = new Month();
-            DateTime nMonths = new DateTime(2019,month,1);
+            DateTime nMonths = new DateTime(2020,month,1);
             DateTime newMonth = new DateTime(nMonths.AddMonths(1).Year, nMonths.AddMonths(1).Month, 1);
         
             
             m1.name = newMonth.ToString("MMMM");
             m1.days = DateTime.DaysInMonth(newMonth.Year, newMonth.Month);
             m1.number = newMonth.Month;
-
+            m1.year = newMonth.Year;
 
 
             return m1;
         }
 
-        public Month preMonth()
+        public Month preMonth(int month)
         {
             Month m1 = new Month();
-            m1.name = "June";
-            m1.days = 30;
-            m1.number = 6;
+            DateTime nMonths = new DateTime(2020, month, 1);
+            DateTime prevMonth = new DateTime(nMonths.AddMonths(-1).Year, nMonths.AddMonths(-1).Month, 1);
 
-            Month m2 = new Month();
-            m1.name = "July";
-            m1.days = 31;
-            m1.number = 7;
+            
+            m1.name = prevMonth.ToString("MMMM");
+            m1.days = DateTime.DaysInMonth(prevMonth.Year, prevMonth.Month);
+            m1.number = prevMonth.Month;
+            m1.year = prevMonth.Year;
+            
 
-            return m2;
+
+            return m1;
 
         }
     }
