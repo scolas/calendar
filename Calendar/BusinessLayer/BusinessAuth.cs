@@ -1,4 +1,5 @@
 ﻿using Calendar.DataLayer;
+using Calendar.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +20,31 @@ namespace Calendar.BusinessLayer
         {
             _irep = irep;
         }
+
+        public bool Logout(string uname, string pass)
+        {
+            bool isuser =false;
+    
+           
+                HttpContext current = HttpContext.Current;
+            current.Session.Remove("LOGGEDIN");
+            if (current.Session["LOGGEDIN"] == null)
+            {
+                isuser = true;
+            }
+            
+            return isuser;
+        }
+
         public bool VerifyLogin(string uname, string pass)
         {
-            bool isuser;
+            bool isuser = false;
             if (_irep.VerifyLogin(uname, pass))
             {
                 isuser = true;
                 HttpContext current = HttpContext.Current;
                 current.Session["LOGGEDIN"] = uname.ToString();
-                current.Session.Timeout = 1;
+                //current.Session.Timeout = 1;
             }
             else
             {
@@ -36,6 +53,28 @@ namespace Calendar.BusinessLayer
                 current.Session["LOGGEDIN"] = "NOUSER";
             }
             return isuser;
+        }
+
+        public bool isLoggedIn()
+        {
+            bool logged = false;
+            HttpContext current = HttpContext.Current;
+            if ((current.Session["LOGGEDIN"])!= null)
+            {
+                logged = true;
+            }
+            else
+            {
+                logged = false;
+            }
+               
+           
+            return logged;
+        }
+
+        public void createUser(User user)
+        {
+            _irep.createUser(user);
         }
     }
 }

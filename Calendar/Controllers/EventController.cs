@@ -17,10 +17,23 @@ namespace Calendar.Controllers
         public ActionResult Index()
         {
             List<Event> eventList = new List<Event>();
-            IBussinessEvent bussinessEvent = new BusinessEvent();
-            eventList = bussinessEvent.events();
+            IBusinessAuth businessAuth = new BusinessAuth();
+  
 
-            return View(eventList);
+            if (!businessAuth.isLoggedIn())
+            {
+                Month m1 = new Month();
+                ViewBag.mData = m1;
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+               
+                IBussinessEvent bussinessEvent = new BusinessEvent();
+                eventList = bussinessEvent.events();
+                return View(eventList);
+            }
+            
         }
 
         [HttpPost]

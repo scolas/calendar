@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calendar.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,8 @@ namespace Calendar.BusinessLayer
     public interface IBusinessAuth
     {
         bool VerifyLogin(string uname, string pass);
+        bool Logout(string uname, string pass);
+        void createUser(User user);
+        bool isLoggedIn();
     }
 }

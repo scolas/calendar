@@ -21,30 +21,81 @@ namespace Calendar.Controllers
         [HttpPost]
         public ActionResult Index(UserLoginViewModel uservw)
         {
-            IBusinessAuth iba = new BusinessAuth();
 
+            IBusinessAuth iba = new BusinessAuth();
             User user = new User
             {
                 fname = uservw.name,
                 pass = uservw.pass
 
             };
-            
-            if(iba.VerifyLogin(user.fname,user.pass) == true)
+
+            if (iba.VerifyLogin(user.fname, user.pass) == true)
             {
-                ViewBag.login = "Login success";
-                Response.Redirect("/Home");
+               
+                
+                ViewBag.data = user;
+                return RedirectToAction("Index", "Calendar");
+
+
+            }
+            else
+            {
+                ViewBag.login = "Login false";
+                ViewBag.data = user;
+                return View();
+            }
+
+            
+        }
+
+        public bool Login(User user)
+        {
+            IBusinessAuth iba = new BusinessAuth();
+            bool loggedIn = false;
+            if (iba.VerifyLogin(user.fname, user.pass) == true)
+            {
+                
+                Response.Redirect("/Calendar");
             }
             else
             {
                 ViewBag.login = "Login false";
             }
-            ViewBag.data = user;
+            return loggedIn;
+        }
+
+        public ActionResult Logout()
+        {
             
-            ViewBag.session = Session["LOGGEDIN"];
-            //return loginAction();
+            IBusinessAuth iba = new BusinessAuth();
+            if (iba.Logout("", "") == true)
+            {
+
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+        public ActionResult Create()
+        {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Create(User user)
+        {
+            IBusinessAuth iba = new BusinessAuth();
+            iba.createUser(user);
+            return RedirectToAction("Index", "Login");
+        }
+
+
+
 
     }
 }

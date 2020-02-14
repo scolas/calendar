@@ -17,10 +17,15 @@ namespace Calendar.Controllers
 
         public ActionResult Index()
         {
-
-             Month m1 = new Month();
-
-                
+            IBusinessAuth businessAuth = new BusinessAuth();
+            if (!businessAuth.isLoggedIn()) {
+                Month m1 = new Month();
+                ViewBag.mData = m1;
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                Month m1 = new Month();
                 int year = (int)DateTime.Now.Year;
                 int m = (int)DateTime.Now.Month;
                 int days = DateTime.DaysInMonth(year, m);
@@ -31,44 +36,12 @@ namespace Calendar.Controllers
                 m1.number = m;
                 m1.year = year;
                 ViewBag.mData = m1;
-           // }
-            
-            return View();
+                return View();
+            }
+               
         }
 
-       /* [HttpPost]
-        [ActionName("Index")]
-        public ActionResult Index_Post(int mn)
-        {
-            int year = (int)DateTime.Now.Year;
-            int m = (int)DateTime.Now.Month;
-            int days = DateTime.DaysInMonth(year, m);
-            int month1 = DateTime.Now.Month;
-            ViewBag.days = (int)days;
-            ViewBag.month = month1;
-            ViewBag.year = year;
-            Month m1 = new Month();
-            m1.days = days;
-            m1.name = DateTime.Now.ToString("MMMM");
-            m1.number = days;
-            m1.year = 2020;
-            if(mn != null)
-            {
-                //int v2 = mn ?? default(int);
-                IBusinessCalendar changeMonth = new BusinessCalendar();
-                Month m2 = changeMonth.nextMonth(1);
-                ViewBag.days = m2.days;
-                ViewBag.month = m2.name;
-                ViewBag.year = "2020";
-                ViewBag.mData = m2;
-            }
-            else
-            {
-                ViewBag.mData = m;
-            }
-           
-            return View();
-        }*/
+      
 
 
 

@@ -11,6 +11,7 @@ namespace Calendar.Models
         public string lname { get; set; }
         public string email { get; set; }
         public string pass { get; set; }
+        public string username { get; set; }
 
     }
 }

@@ -4,70 +4,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace Calendar.DataLayer
+{
+    public class Repository : IRepositoryAuthentication, IRepositoryEvent
     {
-        public class Repository : IRepositoryAuthentication, IRepositoryEvent
+        IDataAccess _idac = null;
+
+        public Repository()
         {
-            IDataAccess _idac = null;
+            _idac = new DataAccess();
+        }
 
-            public Repository()
-            {
-                _idac = new DataAccess();
-            }
-
-            public Repository(IDataAccess idac)
-            {
-                _idac = idac;
-            }
+        public Repository(IDataAccess idac)
+        {
+            _idac = idac;
+        }
 
 
 
 
-            public bool DeleteEvent(Event events)
-            {
+        public bool DeleteEvent(Event events)
+        {
             bool ret = false;
             try
             {
                 DateTime dates = DateTime.Now;
                 string location = events.location;
                 string setBy = events.setBy;
-                string sql =  String.Format("Delete from [dbo].[Events] where eventId ={0}", events.id);
+                string sql = String.Format("Delete from [dbo].[Events] where eventId ={0}", events.id);
 
 
 
-                        object obj = _idac.InsertUpdateDelete(sql);
-                        if (obj != null)
-                        {
-                            ret = true;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-                    return ret;
+                object obj = _idac.InsertUpdateDelete(sql);
+                if (obj != null)
+                {
+                    ret = true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ret;
         }
 
-            public Event GetEvent(int id)
+        public Event GetEvent(int id)
+        {
+            Object ret = false;
+            try
             {
-                Object ret = false;
-                try
+                string sql = "select username from dbo.Event where " +
+                    "eventId='" + id + "' ";
+                object obj = _idac.GetSingleAnswer(sql);
+                if (obj != null)
                 {
-                    string sql = "select username from dbo.Event where " +
-                        "eventId='" + id + "' ";
-                    object obj = _idac.GetSingleAnswer(sql);
-                    if (obj != null)
-                    {
-                        ret = obj;
-                    }
+                    ret = obj;
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
-                return (Event)ret;
             }
+            catch (Exception)
+            {
+                throw;
+            }
+            return (Event)ret;
+        }
 
         public List<Event> GetEvents()
         {
@@ -77,7 +79,7 @@ namespace Calendar.DataLayer
                 string sql = "select * from dbo.Events";
                 DataSet obj = _idac.DataSetXEQDynamicSql(sql);
 
-  
+
                 foreach (DataRow row in obj.Tables[0].Rows)
                 {
                     object[] data = row.ItemArray;
@@ -97,7 +99,7 @@ namespace Calendar.DataLayer
 
                 }
 
-         
+
             }
             catch (Exception)
             {
@@ -107,10 +109,6 @@ namespace Calendar.DataLayer
         }
 
 
-
-
-
-
         public List<Event> GetDayEvents(Day day)
         {
             List<Event> ret = new List<Event>();
@@ -118,12 +116,12 @@ namespace Calendar.DataLayer
             Day d = day;
 
             DateTime d1 = new DateTime(d.year, d.month, d.day);
-                d1.ToString("yyyy-mm-dd HH:mm:ss");
+            d1.ToString("yyyy-mm-dd HH:mm:ss");
 
             try
             {
                 string sql = String.Format("select * from dbo.Events where date >= '{0}' AND date < '{1}'", d1.AddHours(1).ToString("yyyy-MM-dd HH:mm:ss"), d1.AddHours(23).ToString("yyyy-MM-d HH:mm:ss"));
-    
+
                 DataSet obj = _idac.DataSetXEQDynamicSql(sql);
 
                 if (obj != null)
@@ -161,81 +159,123 @@ namespace Calendar.DataLayer
         }
 
 
-
-
         public bool SaveEvent(Event events)
+        {
+
+            bool ret = false;
+            try
             {
+                DateTime dates = events.day;
+                string location = events.location;
+                string setBy = events.setBy;
+                string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy],[title]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "', '" + events.name + "')";
 
-                bool ret = false;
-                try
+
+                object obj = _idac.InsertUpdateDelete(sql);
+                if (obj != null)
                 {
-                    DateTime dates = events.day;
-                    string location = events.location;
-                    string setBy = events.setBy;
-                    string sql = "INSERT INTO[dbo].[Events] ([date], [location],[setBy],[title]) VALUES ('" + dates + "' ,'" + location + "' ,'" + setBy + "', '" + events.name + "')";
-
-
-                    object obj = _idac.InsertUpdateDelete(sql);
-                    if (obj != null)
-                    {
-                        ret = true;
-                    }
+                    ret = true;
                 }
-                catch (Exception)
-                {
+            }
+            catch (Exception)
+            {
                 ret = false;
-                }
-                return ret;
-
             }
+            return ret;
 
-            public bool UpdateEvent(Event events)
+        }
+
+        public bool UpdateEvent(Event events)
+        {
+            bool ret = false;
+            try
             {
-                bool ret = false;
+                DateTime dates = events.day;
+                string location = events.location;
+                string setBy = events.setBy;
+                string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}', title = '{3}' where eventId = {4}",
+                    dates, location, setBy, events.name, events.id);
+
+
+                object obj = _idac.InsertUpdateDelete(sql);
+                if (obj != null && (int)obj != 0)
+                {
+                    ret = true;
+                }
+            }
+            catch (Exception)
+            {
+                ret = false;
+            }
+            return ret;
+        }
+
+
+        public bool VerifyLogin(string name, string pwd)
+        {
+            bool ret = false;
+            try
+            {
+                string sql = "select username from dbo.Users where " +
+                    "Username='" + name + "' and pass='" +
+                    pwd + "'";
+                object obj = _idac.GetSingleAnswer(sql);
+                if (obj != null)
+                {
+                    ret = true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ret;
+        }
+
+
+
+        public void createUser(User user)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["Calendar"].ConnectionString;
+
+            string query = "INSERT INTO[dbo].[Users] ([username] ,[pass] ,[email] ,[fname] ,[lname]) VALUES (@username,@pass,@email,@fname,@lname)";
+
+
+            using (SqlConnection connection = new SqlConnection(connStr))
+            {
+                SqlCommand commands = new SqlCommand(query, connection);
+                commands.Parameters.AddWithValue("@username", user.username);
+                commands.Parameters.AddWithValue("@pass", user.pass);
+                commands.Parameters.AddWithValue("@email", user.email);
+                commands.Parameters.AddWithValue("@fname", user.fname);
+                commands.Parameters.AddWithValue("@lname", user.lname);
+
+
                 try
                 {
-                    DateTime dates = events.day;
-                    string location = events.location;
-                    string setBy = events.setBy;
-                    string sql = String.Format(@"UPDATE [dbo].[Events] set date = '{0}', location = '{1}', setBy = '{2}', title = '{3}' where eventId = {4}",
-                        dates, location, setBy, events.name, events.id);
-
-                
-                    object obj = _idac.InsertUpdateDelete(sql);
-                    if (obj != null && (int)obj != 0)
-                    {
-                        ret = true;
-                    }
+                    connection.Open();
+                    int result = commands.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    ret = false;
+                    Console.WriteLine(ex.Message);
                 }
-                return ret;
-            }
-
-
-
-
-            public bool VerifyLogin(string name, string pwd)
-            {
-                bool ret = false;
-                try
+                finally
                 {
-                    string sql = "select username from dbo.Users where " +
-                        "Username='" + name + "' and pass='" +
-                        pwd + "'";
-                    object obj = _idac.GetSingleAnswer(sql);
-                    if (obj != null)
-                    {
-                        ret = true;
-                    }
+                    connection.Close();
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
-                return ret;
+
             }
         }
+
+
+
+
+
+
+
+
+
+
     }
+}
