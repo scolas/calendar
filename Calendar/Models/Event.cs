@@ -18,6 +18,7 @@ namespace Calendar.Models
 
          
         public List<String> attendees { get; set; }
+        public String attendent { get; set; }
 
         [Required]
         public string location {get; set;}

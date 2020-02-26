@@ -123,8 +123,10 @@
     <Compile Include="BusinessLayer\BusinessAuth.cs" />
     <Compile Include="BusinessLayer\BusinessCalendar.cs" />
     <Compile Include="BusinessLayer\BusinessEvent.cs" />
+    <Compile Include="BusinessLayer\BusinessInvite.cs" />
     <Compile Include="BusinessLayer\IBusinessAuth.cs" />
     <Compile Include="BusinessLayer\IBusinessCalendar.cs" />
+    <Compile Include="BusinessLayer\IBusinessInvite.cs" />
     <Compile Include="BusinessLayer\IBussinessEvent.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\EventController.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="DataLayer\DataAccess.cs" />
     <Compile Include="DataLayer\IDataAccess.cs" />
+    <Compile Include="DataLayer\IRepositoryInvite.cs" />
     <Compile Include="DataLayer\IRepositoryAuthentication.cs" />
     <Compile Include="DataLayer\IRepositoryEvent.cs" />
     <Compile Include="DataLayer\Repository.cs" />
@@ -140,6 +143,7 @@
     </Compile>
     <Compile Include="Models\Day.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Invite.cs" />
     <Compile Include="Models\Month.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

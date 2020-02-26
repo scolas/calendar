@@ -9,6 +9,9 @@
     var mdata = ViewBag.mData;
 
 }
+@{
+    var minvite = ViewBag.invites;
+}
 
 <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
 <script>
@@ -92,7 +95,7 @@
                         return false;
         });
 
-        $('body').on('click','.testbody', function(){ 
+        $('body').on('click','.testbody', function(){
             var currentday = $('.daynumber').innerHTML;
                         var curentMonth = document.getElementById("monthnum").innerHTML;
                         var curentyear = document.getElementById("monthyear").innerHTML;
@@ -141,7 +144,7 @@
 
         }
 
-    
+
 
 
 </script>
@@ -195,7 +198,30 @@
 </div>
 <a href="@Url.Action("Create", "Event")">Create</a>
 
+
+
+
+
+<h1>@minvite</h1>
+@foreach (var student in minvite)
+{
+    <h1>test invite</h1>
+    <h1>@student.userId1</h1>
+}
 <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
 @Ajax.ActionLink("nextMonth", "nextMonth",
         new AjaxOptions
         {

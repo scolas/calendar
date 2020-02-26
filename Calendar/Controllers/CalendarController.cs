@@ -18,6 +18,7 @@ namespace Calendar.Controllers
         public ActionResult Index()
         {
             IBusinessAuth businessAuth = new BusinessAuth();
+            IBusinessInvite businessInvite = new BusinessInvite();
             if (!businessAuth.isLoggedIn()) {
                 Month m1 = new Month();
                 ViewBag.mData = m1;
@@ -36,6 +37,10 @@ namespace Calendar.Controllers
                 m1.number = m;
                 m1.year = year;
                 ViewBag.mData = m1;
+
+                List<Invite> invites = new List<Invite>();
+                invites = businessInvite.getInvite(1);
+                ViewBag.invites = invites;
                 return View();
             }
                
