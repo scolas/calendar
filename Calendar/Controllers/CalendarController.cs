@@ -88,6 +88,21 @@ namespace Calendar.Controllers
         }
 
 
+        [HttpPost]
+        public JsonResult acceptInvite(string invite)
+        {
+            IBusinessInvite businessInvite = new BusinessInvite();
+            bool status = businessInvite.acceptInvite(1);
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult denyInvite(string invite)
+        {
+            IBusinessInvite businessInvite = new BusinessInvite();
+            bool status = businessInvite.denyInvite(1);
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
 
 
 

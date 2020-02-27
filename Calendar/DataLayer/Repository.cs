@@ -54,21 +54,23 @@ namespace Calendar.DataLayer
         public Event GetEvent(int id)
         {
             Object ret = false;
+
+            Event tempEvent = new Event();
+
             try
             {
-                string sql = "select * from dbo.Event where " +
+                string sql = "select * from dbo.Events where " +
                     "eventId='" + id + "' ";
                 DataSet obj = _idac.DataSetXEQDynamicSql(sql);
                 if (obj != null)
                 {
                     DataRow row = obj.Tables[0].Rows[0];
                     object[] data = row.ItemArray;
-                    Event tempEvent = new Event();
                     tempEvent.id = (int)data[0];
                     tempEvent.day = (DateTime)data[1];
                     tempEvent.location = data[2].ToString();
                     tempEvent.setBy = data[3].ToString();
-                    tempEvent.name = data[];
+                    tempEvent.name = data[4].ToString();
                     
 
                 }
@@ -77,7 +79,7 @@ namespace Calendar.DataLayer
             {
                 throw;
             }
-            return (Event)ret;
+            return tempEvent;
         }
 
 
@@ -443,14 +445,51 @@ namespace Calendar.DataLayer
             }
         }
 
+        public bool acceptInvite(int id)
+        {
+
+            bool ret = false;
+            try
+            {
+                
+                string sql = String.Format(@"UPDATE [dbo].[Invites] set status = '{0}' where inviteId = {1}",
+                     "Accepted", id);
 
 
+                object obj = _idac.InsertUpdateDelete(sql);
+                if (obj != null && (int)obj != 0)
+                {
+                    ret = true;
+                }
+            }
+            catch (Exception)
+            {
+                ret = false;
+            }
+            return ret;
+        }
+
+        public bool denyInvite(int id)
+        {
+
+            bool ret = false;
+            try
+            {
+                string sql = String.Format(@"UPDATE [dbo].[Invites] set status = '{0}' where inviteId = {1}",
+                     "Deny", id);
 
 
-
-
-
-
-
+                object obj = _idac.InsertUpdateDelete(sql);
+                if (obj != null && (int)obj != 0)
+                {
+                    ret = true;
+                }
+            }
+            catch (Exception)
+            {
+                ret = false;
+            }
+            return ret;
+        }
     }
 }

@@ -122,6 +122,45 @@
                         });
                         return false;
         });
+
+                $("#accept").click(function () {
+                             $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("acceptInvite")',
+                                data: '{invite: "2020"}',
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (month) {
+                                    alert("Invite accepted");
+                                    document.getElementById("status").innerHTML = "Accepted"
+
+                            },
+                            error: function () {
+                                alert("error while accepting");
+                            }
+                        });
+                        return false;
+                });
+
+
+                $("#deny").click(function () {
+                             $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("denyInvite")',
+                                data: '{invite: "2020"}',
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                success: function (month) {
+                                    alert("Invite denyed");
+                                      document.getElementById("status").innerHTML = "Denied"
+
+                            },
+                            error: function () {
+                                alert("error while denying ");
+                            }
+                        });
+                        return false;
+                });
     });
     function LoadData(month) {
         if (month != null) {
@@ -175,17 +214,7 @@
     <li>Su</li>
 </ul>
 
-<!-- <div id="day" class="days">
-    <ul >
-        @for (int i = 1; i < mdata.days; i++)
-        {
 
-            <li><a href="@Url.Action("getDayEvents", "Event" , new { days=@i, month=mdata.number, year=mdata.year })"> <span>@i</span></a></li>
-        }
-    </ul>
-</div>
-
-    -->
 
 <div id="day2" class="days">
     <ul>
@@ -202,14 +231,19 @@
 
 
 
-<h1>@minvite</h1>
 @foreach (var student in minvite)
 {
-    <h1>test invite</h1>
-    <h1>@student.userId1</h1>
+
+    <h1>@student.UserId1 @student.UserId2 @student.events.name @student.eventId</h1>
+    <h1 id="status">@student.status</h1>
+
+
+
 }
 <br>
+<li id="accept">Accept</li>
 
+<li id="deny">Deny</li>
 
 
 

@@ -25,5 +25,17 @@ namespace Calendar.BusinessLayer
             List<Invite> i = _irep.getInvite(id);
             return i;
         }
+
+        public bool acceptInvite(int id)
+        {
+            Boolean i = _irep.acceptInvite(id);
+            return i;
+        }
+
+        public bool denyInvite(int id)
+        {
+            Boolean i = _irep.denyInvite(id);
+            return i;
+        }
     }
 }
