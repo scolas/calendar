@@ -255,15 +255,5 @@
 
 
 
-
-@Ajax.ActionLink("nextMonth", "nextMonth",
-        new AjaxOptions
-        {
-          HttpMethod = "POST", // HttpMethod to use, GET or POST
-          UpdateTargetId = "divStudents", // ID of the HTML element to update
-          InsertionMode = InsertionMode.Replace // Replace the existing contents
-        })
-<p id="monthnum" value="test">2</p>
-<p id="monthyear" value="test">2</p>
-<a href="#" runat="server" onserverclick="/Event/getDayEvent?day=1&month=3&year=2020">focus</a>
-<a href="#" runat="server" onclick='location.href="/Event/getDayEvents?days=1&month=3&year=2020"'>focus1</a>
+<p id="monthnum" value="test"></p>
+<p id="monthyear" value="test"></p>

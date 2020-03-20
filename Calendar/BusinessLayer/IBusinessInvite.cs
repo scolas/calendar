@@ -9,7 +9,7 @@ namespace Calendar.BusinessLayer
 {
     interface IBusinessInvite
     {
-        List<Invite> getInvite(int id);
+        List<Invite> getInvite();
 
         bool acceptInvite(int id);
         bool denyInvite(int id);

@@ -237,7 +237,7 @@ namespace Calendar.DataLayer
 
 
 
-        public List<Invite> getInvite(int id)
+        public List<Invite> getInvite()
         {
             List<Event> ret = new List<Event>();
             List<Invite> invites = new List<Invite>();
@@ -245,6 +245,7 @@ namespace Calendar.DataLayer
             {
                 HttpContext current = HttpContext.Current;
                 string username = current.Session["LOGGEDIN"].ToString();
+                int id = getUserId(username);
                 string sql = "select * from dbo.Invites where userId1 = '" + id + "'";
                 DataSet obj = _idac.DataSetXEQDynamicSql(sql);
                 List<int> ids = new List<int>();

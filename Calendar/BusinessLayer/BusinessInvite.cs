@@ -20,9 +20,9 @@ namespace Calendar.BusinessLayer
             _irep = irep;
         }
 
-        public List<Invite> getInvite(int id)
+        public List<Invite> getInvite()
         {
-            List<Invite> i = _irep.getInvite(id);
+            List<Invite> i = _irep.getInvite();
             return i;
         }
 

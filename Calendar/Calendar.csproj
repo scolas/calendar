@@ -129,6 +129,7 @@
     <Compile Include="BusinessLayer\IBusinessInvite.cs" />
     <Compile Include="BusinessLayer\IBussinessEvent.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\DashController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -198,6 +199,7 @@
     <Content Include="Views\Event\Delete.cshtml" />
     <Content Include="Views\Shared\_pView.cshtml" />
     <Content Include="Views\Login\Create.cshtml" />
+    <Content Include="Views\Dash\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

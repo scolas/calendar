@@ -39,7 +39,7 @@ namespace Calendar.Controllers
                 ViewBag.mData = m1;
 
                 List<Invite> invites = new List<Invite>();
-                invites = businessInvite.getInvite(1);
+                invites = businessInvite.getInvite();
                 ViewBag.invites = invites;
                 return View();
             }
