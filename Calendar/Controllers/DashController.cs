@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Calendar.BusinessLayer;
+using Calendar.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +13,19 @@ namespace Calendar.Controllers
         // GET: Dash
         public ActionResult Index()
         {
-            return View();
+            List<Employee> employeeList = new List<Employee>();
+            IBusinessDash businessDash = new BusinessDash();
+
+
+
+
+            employeeList = businessDash.employees();
+                return View(employeeList);
+        }
+
+        public ActionResult Edit(Employee employeeEdit)
+        {
+            return View(employeeEdit);
         }
     }
 }

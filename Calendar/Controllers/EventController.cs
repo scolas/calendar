@@ -161,7 +161,6 @@ namespace Calendar.Controllers
             //return View();
         }
 
- 
         // public JsonResult getDayEvent(int days, int month, int year)
         public ActionResult getDayEvent(int day, int month, int year)
         {

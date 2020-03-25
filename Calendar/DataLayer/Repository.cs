@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace Calendar.DataLayer
 {
-    public class Repository : IRepositoryAuthentication, IRepositoryEvent, IRepositoryInvite
+    public class Repository : IRepositoryAuthentication, IRepositoryEvent, IRepositoryInvite, IRepositoryDash
     {
         IDataAccess _idac = null;
 
@@ -489,6 +489,41 @@ namespace Calendar.DataLayer
             catch (Exception)
             {
                 ret = false;
+            }
+            return ret;
+        }
+
+        public List<Employee> GetEmployees()
+        {
+            List<Employee> ret = new List<Employee>();
+            try
+            {
+                HttpContext current = HttpContext.Current;
+                string username = current.Session["LOGGEDIN"].ToString();
+                string sql = "select * from dbo.Employees";
+                DataSet obj = _idac.DataSetXEQDynamicSql(sql);
+
+
+                foreach (DataRow row in obj.Tables[0].Rows)
+                {
+                    Employee tempEmployee = new Employee();
+                    object[] data = row.ItemArray;
+                    int id = (int)data[0];
+                    tempEmployee.lname = data[1].ToString();
+                    tempEmployee.fname  = data[2].ToString();
+                    tempEmployee.address  = data[3].ToString();
+                    tempEmployee.city  = data[4].ToString();
+
+                    
+                    ret.Add(tempEmployee);
+
+                }
+
+
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return ret;
         }

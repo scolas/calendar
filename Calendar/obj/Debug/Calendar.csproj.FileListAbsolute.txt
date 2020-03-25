@@ -1,3 +1,4 @@
+C:\Users\scott\source\repos\Calendar\Calendar\obj\Debug\Calendar.csprojAssemblyReference.cache
 C:\Users\scott\source\repos\Calendar\Calendar\bin\Calendar.dll.config
 C:\Users\scott\source\repos\Calendar\Calendar\bin\Calendar.dll
 C:\Users\scott\source\repos\Calendar\Calendar\bin\Calendar.pdb
@@ -75,4 +76,3 @@ C:\Users\scott\source\repos\Calendar\Calendar\bin\Microsoft.CodeDom.Providers.Do
 C:\Users\scott\source\repos\Calendar\Calendar\obj\Debug\Calendar.csproj.CopyComplete
 C:\Users\scott\source\repos\Calendar\Calendar\obj\Debug\Calendar.dll
 C:\Users\scott\source\repos\Calendar\Calendar\obj\Debug\Calendar.pdb
-C:\Users\scott\source\repos\Calendar\Calendar\obj\Debug\Calendar.csprojAssemblyReference.cache
